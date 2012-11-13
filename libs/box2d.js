@@ -324,37 +324,10 @@ Crafty.extend({
 										   
 			_world.SetContactListener(contactListener);
 			
-			Crafty.bind("EnterFrame", function() {
-				_world.Step(
-					   1 / 30   //frame-rate
-					,  8       //velocity iterations
-					,  3       //position iterations
-				 );
-				 
-				for(var b = _world.GetBodyList(); b; b=b.GetNext()) {    
-					if (b.GetUserData()) {
-						var sprite = b.GetUserData(); 
-						sprite.attr(
-									{
-										x: b.GetPosition().x * _PTM_RATIO, 
-										y:b.GetPosition().y * _PTM_RATIO
-									}					
-							);
-						sprite.rotation = Crafty.math.radToDeg(b.GetAngle());
-									
-					}        
-				}	
-					
-				if(Crafty.box2D.ShowBox2DDebug){
-					_world.DrawDebugData();
-				}
-				_world.ClearForces();
-				
-			});
-			
 			Crafty.box2D.world = _world;
 			Crafty.box2D.PTM_RATIO = _PTM_RATIO;
 			Crafty.box2D.contacts = _contacts;
+			this.resume();
 		},
 		
 		showDebugInfo : function(){
@@ -383,6 +356,51 @@ Crafty.extend({
 			}else{
 				Crafty.box2D.ShowBox2DDebug = false;
 			}
+		},
+
+		pause : function(){
+			var _world = Crafty.box2D.world;
+			Crafty.unbind("EnterFrame", Crafty.box2D.simulationNumber);
+			Crafty.bind("EnterFrame", function(){
+				_world.ClearForces();
+			});
+			Crafty.box2D.paused = true;
+		},
+
+		resume : function(){
+			var _world = Crafty.box2D.world;
+			var _PTM_RATIO = Crafty.box2D.PTM_RATIO;
+			var _contacts = Crafty.box2D.contacts;
+			Crafty.box2D.simulationNumber =			
+			Crafty.bind("EnterFrame", function() {
+			
+					_world.Step(
+						   1 / 30   //frame-rate
+						,  8       //velocity iterations
+						,  3       //position iterations
+					 );
+					 
+					for(var b = _world.GetBodyList(); b; b=b.GetNext()) {    
+						if (b.GetUserData()) {
+							var sprite = b.GetUserData(); 
+							sprite.attr(
+										{
+											x: b.GetPosition().x * _PTM_RATIO, 
+											y:b.GetPosition().y * _PTM_RATIO
+										}					
+								);
+							sprite.rotation = Crafty.math.radToDeg(b.GetAngle());
+										
+						}        
+					}	
+						
+					if(Crafty.box2D.ShowBox2DDebug){
+						_world.DrawDebugData();
+					}
+					_world.ClearForces();
+			
+			});
+			Crafty.box2D.paused = false;
 		}
 	}
 });
