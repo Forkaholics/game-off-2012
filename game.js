@@ -20,7 +20,7 @@ function gameInit() {
                                     ]
                             });
   var mouse = Crafty.e("2D, Canvas, Mouse")
-                    .attr({ w: stageW, h: stageH})
+                    .attr({ w: Crafty.viewport.width, h: Crafty.viewport.height })
                     .bind("MouseDown", function(mouse) {
                       console.log("sex");
                       if(mouse.mouseButton == Crafty.mouseButtons.LEFT){
@@ -38,7 +38,7 @@ function gameInit() {
                       }else{
                         Crafty.box2D.pause();
                       }
-                    });
+                    }).color('red');
   Crafty.e("Sheet").dimmensions(100).location(100,200);
   Crafty.e("Block").dimmensions(50,50).location(150,250);
 }

@@ -327,6 +327,7 @@ Crafty.extend({
 			Crafty.box2D.world = _world;
 			Crafty.box2D.PTM_RATIO = _PTM_RATIO;
 			Crafty.box2D.contacts = _contacts;
+
 			this.resume();
 		},
 		
@@ -361,9 +362,7 @@ Crafty.extend({
 		pause : function(){
 			var _world = Crafty.box2D.world;
 			Crafty.unbind("EnterFrame", Crafty.box2D.simulationNumber);
-			Crafty.bind("EnterFrame", function(){
-				_world.ClearForces();
-			});
+			_world.ClearForces();
 			Crafty.box2D.paused = true;
 		},
 
