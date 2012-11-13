@@ -19,6 +19,11 @@ function gameInit() {
                                       [stageW, stageH]
                                     ]
                             });
+  var mouse = Crafty.e("2D, DOM, Mouse")
+                    .attr({ w: stageW, h: stageH})
+                    .bind("Click", function(mouse) {
+                        Crafty.e("Block").dimmensions(50,50).location(mouse.clientX,mouse.clientY);
+                });
   Crafty.e("Sheet").dimmensions(100).location(100,200);
   Crafty.e("Block").dimmensions(50,50).location(150,250);
 }
