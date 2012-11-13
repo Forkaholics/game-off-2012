@@ -29,7 +29,13 @@ function gameInit() {
                     .attr({w: 50, h: 50,
                            x: 700, y: 0})
                     .bind("Click", function(mouse){
-                      Crafty.box2D.world.m_gravity.y = 0;
+                      if(Crafty.box2D.world.m_gravity.y != 0){
+                        Crafty.box2D.world.m_gravity.y = 0;
+                        //Crafty.box2D.world.ClearForces();
+                      }else{
+                        Crafty.box2D.world.m_gravity.y = 10;
+                      }
+                      console.log(Crafty.box2D.world);
                     })
   Crafty.e("Sheet").dimmensions(100).location(100,200);
   Crafty.e("Block").dimmensions(50,50).location(150,250);
