@@ -21,9 +21,13 @@ function gameInit() {
                             });
   var mouse = Crafty.e("2D, Canvas, Mouse")
                     .attr({ w: stageW, h: stageH})
-                    .bind("Click", function(mouse) {
-                      Crafty.e("Block").dimmensions(50,50).location(mouse.clientX-25,mouse.clientY);
-                });
+                    .bind("MouseDown", function(mouse) {
+                      console.log("sex");
+                      if(mouse.mouseButton == Crafty.mouseButtons.LEFT){
+                        Crafty.e("Block").dimmensions(50,50).location(mouse.clientX-25,mouse.clientY);
+                      }else
+                        Crafty.e("Sheet").dimmensions(100).location(mouse.clientX-25,mouse.clientY);
+                    });
 
   var pause = Crafty.e('2D, Canvas, Mouse, Color')
                     .attr({w: 50, h: 50,
@@ -34,7 +38,7 @@ function gameInit() {
                       }else{
                         Crafty.box2D.pause();
                       }
-                    })
+                    });
   Crafty.e("Sheet").dimmensions(100).location(100,200);
   Crafty.e("Block").dimmensions(50,50).location(150,250);
 }
