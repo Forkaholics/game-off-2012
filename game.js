@@ -1,28 +1,24 @@
-Crafty.init(400,400);
+var stageH = 400;
+var stageW = 600;
 
+window.onload = function () {
+    gameInit();
+};
 
-Crafty.c("RandomPosition", {
-  init: function() {
-    this.attr({ x: Crafty.math.randomInt(50,350), y: Crafty.math.randomInt(50,350) });
-  }
-});
+function gameInit() {
 
-Crafty.c("platform", {
-  init: function() {
-      this.addComponent("2D, Canvas, Color");
-      this.color("grey"); 
-    },
-    plength: function(length) { this.attr({w:length, h: 10}); }
-}); 
-
-Crafty.e("platform").plength(100);
-
-var block = Crafty.e("bob, 2D, Canvas, Twoway, RandomPosition, Color, Collision")
-                  .twoway(3).color("red").attr({w: 50, h: 50})
-                  .onHit('enemy', function(){
-                    this.color("blue");
-                  });
-
-var enemy = Crafty.e("enemy, 2D, Canvas, RandomPosition, Color")
-                  .color("blue").attr({w: 50, h: 50})
-                  .bind('EnterFrame');
+  Crafty.init();
+  Crafty.canvas.init();
+  Crafty.box2D.init(XGRAVITY, YGRAVITY, PXTOMETER, SLEEP);
+  var floor = Crafty.e("2D, Canvas, Box2D")
+                    .attr({ x: 0, y: 0})
+                    .box2d({
+                            bodyType: 'static',
+                            shape: [
+                                      [0, stageH],
+                                      [stageW, stageH]
+                                    ]
+                            });
+  Crafty.e("Sheet").dimmensions(100).location(100,200);
+  Crafty.e("Block").dimmensions(50,50).location(150,250);
+}
