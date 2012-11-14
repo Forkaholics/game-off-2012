@@ -1,5 +1,4 @@
-var stageH = 400;
-var stageW = 600;
+
 
 window.onload = function () {
     gameInit();
@@ -10,14 +9,15 @@ function gameInit() {
   Crafty.canvas.init();
   Crafty.box2D.init(XGRAVITY, YGRAVITY, PXTOMETER, SLEEP);
   var WORLD = Crafty.box2D.world;
-
+  var stageH = Crafty.viewport.height-50;
+  var stageW = Crafty.viewport.width;
   var floor = Crafty.e("2D, Canvas, Box2D, Color")
                     .attr({ x: 0, y: stageH,
-                             h:10, w: stageW})
+                             h:10, w: stageW-10})
                     .box2d({bodyType: 'static'})
                     .color('green');
   var mouse = Crafty.e("2D, Canvas, Mouse")
-                    .attr({ w: Crafty.viewport.width, h: Crafty.viewport.height })
+                    .attr({ w: stageW, h: Crafty.viewport.height })
                     .bind("MouseDown", function(mouse) {
                       if(mouse.mouseButton == Crafty.mouseButtons.LEFT){
                         Crafty.e("Block").dimmensions(50,50).location(mouse.clientX-25,mouse.clientY-25);
