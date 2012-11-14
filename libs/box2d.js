@@ -14,14 +14,6 @@ var   b2Vec2 = Box2D.Common.Math.b2Vec2
 			,	b2FilterData = Box2D.Dynamics.b2FilterData
             ;
 
-/*
-	Base variables use for the settings within the game. 
-*/
-
-var XGRAVITY = 0;
-var YGRAVITY = 10;
-var PXTOMETER = 32;
-var SLEEP = true;
 
 			
 /**@
