@@ -39,59 +39,65 @@ Crafty.c("Block", {
 
 Crafty.c("Player",{
   init: function(){
-    this.addComponent("KeyMovableBox2D");
+    this.addComponent('KeyMovableBox2D');
     this.color("blue");
     this.attr({w:30, h:30});
-  }
+  },
 });
 
 Crafty.c("KeyMovableBox2D",{
   init: function(){
-    this.addComponent("MovableBox2D, KeyBoard");
-    this.bind('KeyDown', function(e){
-      this.moveDirection.right = 
-        this.moveDirection.left = 
-        this.moveDirection.down = 
-        this.moveDirection.up = false;
+    this.addComponent('MovableBox2D');
+    this.bind('KeyDown', function(e) {
+        // Default movement booleans to false
+        this.move.right = 
+        this.move.left = 
+        this.move.down = 
+        this.move.up = false;
 
-      // If keys are down, set the direction
-      if (e.keyCode == Crafty.keys.RIGHT_ARROW){
-        this.moveDirection.right = true;
-      } 
-      if (e.keyCode == Crafty.keys.LEFT_ARROW){
-       this.moveDirection.left = true;
+        // If keys are down, set the direction
+        if (e.keyCode == Crafty.keys['RIGHT_ARROW']){ 
+          this.move.right = true;
+        }else if (e.keyCode == Crafty.keys['LEFT_ARROW']){
+          this.move.left = true;
+        }else if (e.keyCode == Crafty.keys['UP_ARROW']){
+          this.move.up = true;
+        }else if (e.keyCode == Crafty.keys['DOWN_ARROW']){
+           this.move.down = true;
+        }
+        });
+    this.bind('KeyUp', function(e) {
+      // Default movement booleans to false
+      this.move.right = 
+      this.move.left = 
+      this.move.down = 
+      this.move.up = false;
+      if(e.keyCode == Crafty.keys['RIGHT_ARROW'] ||
+         e.keyCode == Crafty.keys['LEFT_ARROW']  ||
+         e.keyCode == Crafty.keys['UP_ARROW']    ||
+         e.keyCode == Crafty.keys['DOWN_ARROW']  ){
+        this.body.SetLinearVelocity({x:0,y:0});
       }
-      if (e.keyCode == Crafty.keys.UP_ARROW){
-        this.moveDirection.up = true;
-      } 
-      if (e.keyCode == Crafty.keys.DOWN_ARROW){
-       this.moveDirection.down = true;
-      }
-
-      //this.preventTypeaheadFind(e);
     });
   }
 });
 
-Crafty.c("MovableBox2D",{
+Crafty.c("MovableBox2D", {
   speed: 3,
   moveDirection: {left: false, right: false, up: false, down: false},
 
   init: function(){
+
     this.addComponent("2D, Canvas, Color, Box2D");
-    // this.box2d({
-    //   bodyType: 'dynamic'
-    // });
     this.bind('EnterFrame', function() {
-      if (this.moveDirection.right){
-        console.log(this.speed);
-       this.body.m_force.x += this.speed;
-      }else if (this.moveDirection.left){
-       this.body.m_force.x -= this.speed; 
-      }else if (this.moveDirection.up){
-       this.body.m_force.y -= this.speed;
-      }else if (this.moveDirection.down){
-       this.body.m_force.y += this.speed;
+      if(this.move.right){
+        this.body.SetLinearVelocity({x:this.speed, y:0});
+      }else if (this.move.left){
+        this.body.SetLinearVelocity({x:-1* (this.speed), y:0});
+      }else if (this.move.up){
+        this.body.SetLinearVelocity({x:0, y: -1* (this.speed)});
+      }else if (this.move.down){
+        this.body.SetLinearVelocity({x:0, y: 1* (this.speed)});
       }
     });
   },
@@ -117,7 +123,7 @@ Crafty.c("MovableBox2D",{
     this.box2d({
       bodyType: 'dynamic'
     });
-    this.body.allowSleep(false);
+    this.body.SetSleepingAllowed(false);  
     return this;
-  }
+  },
 });
