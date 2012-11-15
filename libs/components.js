@@ -65,18 +65,18 @@ Crafty.c("KeyMovableBox2D",{
         }else if (e.keyCode == Crafty.keys['DOWN_ARROW']){
            this.move.down = true;
         }
-      });
-    this.bind('KeyUown', function(e) {
-
-      // If keys are down, set the direction
-      if (e.keyCode == Crafty.keys['RIGHT_ARROW']){ 
-        this.move.right = true;
-      }else if (e.keyCode == Crafty.keys['LEFT_ARROW']){
-        this.move.left = true;
-      }else if (e.keyCode == Crafty.keys['UP_ARROW']){
-        this.move.up = true;
-      }else if (e.keyCode == Crafty.keys['DOWN_ARROW']){
-         this.move.down = true;
+        });
+    this.bind('KeyUp', function(e) {
+      // Default movement booleans to false
+      this.move.right = 
+      this.move.left = 
+      this.move.down = 
+      this.move.up = false;
+      if(e.keyCode == Crafty.keys['RIGHT_ARROW'] ||
+         e.keyCode == Crafty.keys['LEFT_ARROW']  ||
+         e.keyCode == Crafty.keys['UP_ARROW']    ||
+         e.keyCode == Crafty.keys['DOWN_ARROW']  ){
+        this.body.SetLinearVelocity({x:0,y:0});
       }
     });
   }
