@@ -50,10 +50,10 @@ Crafty.c("Player",{
   },
 });
 
-Crafty.c("KeyMovableBox2D", function(){
+Crafty.c("KeyMovableBox2D",{
   init: function(){
 
-  .bind('keydown', function(e) {
+  this.bind('keydown', function(e) {
       // Default movement booleans to false
       move.right = move.left = move.down = move.up = false;
 
@@ -68,7 +68,7 @@ Crafty.c("KeyMovableBox2D", function(){
   }
 });
 
-Crafty.c("MovableBox2D", function(){
+Crafty.c("MovableBox2D", {
   speed: 3,
   move: {left: false, right: false, up: false, down: false},
 
