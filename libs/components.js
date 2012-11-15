@@ -39,50 +39,61 @@ Crafty.c("Block", {
 
 Crafty.c("Player",{
   init: function(){
+    this.addComponent("KeyMovableBox2D");
     this.color("blue");
     this.attr({w:30, h:30});
-    console.log(this.body);
-  },
-
-  startingLocation: function(xPos, yPos){
-    this.attr({x: xPos, y: yPos});
-    return this;
-  },
-});
-
-Crafty.c("KeyMovableBox2D", function(){
-  init: function(){
-
-  .bind('keydown', function(e) {
-      // Default movement booleans to false
-      move.right = move.left = move.down = move.up = false;
-
-      // If keys are down, set the direction
-      if (e.keyCode === Crafty.keys.RA) move.right = true;
-      if (e.keyCode === Crafty.keys.LA) move.left = true;
-      if (e.keyCode === Crafty.keys.UA) move.up = true;
-      if (e.keyCode === Crafty.keys.DA) move.down = true;
-
-      this.preventTypeaheadFind(e);
-    })
   }
 });
 
-Crafty.c("MovableBox2D", function(){
+Crafty.c("KeyMovableBox2D",{
+  init: function(){
+    this.addComponent("MovableBox2D, KeyBoard");
+    this.bind('KeyDown', function(e){
+      this.moveDirection.right = 
+        this.moveDirection.left = 
+        this.moveDirection.down = 
+        this.moveDirection.up = false;
+
+      // If keys are down, set the direction
+      if (e.keyCode == Crafty.keys.RIGHT_ARROW){
+        this.moveDirection.right = true;
+      } 
+      if (e.keyCode == Crafty.keys.LEFT_ARROW){
+       this.moveDirection.left = true;
+      }
+      if (e.keyCode == Crafty.keys.UP_ARROW){
+        this.moveDirection.up = true;
+      } 
+      if (e.keyCode == Crafty.keys.DOWN_ARROW){
+       this.moveDirection.down = true;
+      }
+
+      //this.preventTypeaheadFind(e);
+    });
+  }
+});
+
+Crafty.c("MovableBox2D",{
   speed: 3,
-  move: {left: false, right: false, up: false, down: false},
+  moveDirection: {left: false, right: false, up: false, down: false},
 
   init: function(){
     this.addComponent("2D, Canvas, Color, Box2D");
-    this.box2d({
-      bodyType: 'dynamic'
+    // this.box2d({
+    //   bodyType: 'dynamic'
+    // });
+    this.bind('EnterFrame', function() {
+      if (this.moveDirection.right){
+        console.log(this.speed);
+       this.body.m_force.x += this.speed;
+      }else if (this.moveDirection.left){
+       this.body.m_force.x -= this.speed; 
+      }else if (this.moveDirection.up){
+       this.body.m_force.y -= this.speed;
+      }else if (this.moveDirection.down){
+       this.body.m_force.y += this.speed;
+      }
     });
-    this.bind('enterframe', function() {
-      if (move.right) this.x += this.speed; 
-      else if (move.left) this.x -= this.speed; 
-      else if (move.up) this.y -= this.speed;
-      else if (move.down) this.y += this.speed;
-  })
   },
 
   setInMotion: function(direction, speed){
@@ -91,19 +102,22 @@ Crafty.c("MovableBox2D", function(){
     }
 
     if(direction == 'left'){
-      move.left=true;
+      this.moveDirection.left=true;
     }else if(direction == 'right'){
-      move.right=true;
+      this.moveDirection.right=true;
     }else if(direction == 'up'){
-      move.up=true;
+      this.moveDirection.up=true;
     }else{
-      move.down=true;
+      this.moveDirection.down=true;
     }
-  }
-});
+  },
 
-Crafty.c("RandomPosition", {
-  init: function() {
-    this.attr({ x: Crafty.math.randomInt(50,350), y: Crafty.math.randomInt(50,350) });
+  startingLocation: function(xPos, yPos){
+    this.attr({x: xPos, y: yPos});
+    this.box2d({
+      bodyType: 'dynamic'
+    });
+    this.body.allowSleep(false);
+    return this;
   }
 });

@@ -33,6 +33,8 @@ Crafty.c("Box2D", {
 	* Array than contains the b2Fixtures of the entity.	
 	*/
 	fixtures : null,
+
+	place : {x:0, y:0},
 	
 	init: function () {
 		this.requires("2D");
@@ -71,8 +73,11 @@ Crafty.c("Box2D", {
 			BodyDef.type = b2Body.b2_kinematicBody;
 		}
 		
-		
-		BodyDef.position.Set(this._x/PTM_RATIO, this._y/PTM_RATIO);
+		if(this._x == null || this._y == null){
+			BodyDef.position.Set(this.place.x/PTM_RATIO, this.place.y/PTM_RATIO);
+		}else{
+			BodyDef.position.Set(this._x/PTM_RATIO, this._y/PTM_RATIO);
+		}
 		BodyDef.userData = this;
 		
 		this.body = world.CreateBody(BodyDef);
@@ -230,6 +235,18 @@ Crafty.c("Box2D", {
 		});
 		return this;
 	},
+
+	/**@
+	*	#.reSpawn
+	* @comp Box2D
+	* @sign public this .reSpawn()
+	* Respawns the object at a new position. Useful if you have to wait to asign the location till
+	* after previously initiating box2d.
+	*/
+	reSpawn: function(){
+		//TODO: actually destroy the body
+		this.box2d
+	}
 });
 
 /**@
