@@ -11,6 +11,8 @@ function gameInit() {
   var WORLD = Crafty.box2D.world;
   var stageH = Crafty.viewport.height-50;
   var stageW = Crafty.viewport.width;
+  var player = Crafty.e('Player')
+                     .startingLocation(0,0);
   var floor = Crafty.e("2D, Canvas, Box2D, Color")
                     .attr({ x: 0, y: stageH,
                              h:10, w: stageW-10})
