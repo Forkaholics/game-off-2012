@@ -122,6 +122,7 @@ Crafty.c("MovableBox2D", {
     this.box2d({
       bodyType: 'dynamic'
     });
+    this.body.SetSleepingAllowed(false);  
     return this;
   },
 });
